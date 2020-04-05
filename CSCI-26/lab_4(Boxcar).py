@@ -20,7 +20,7 @@
 
 ## (delete above and uncomment & fix up below)
 from random import randint
-
+from copy import deepcopy
 def printhistory(state):
   print(state['dice1'])
   print(state['dice2'])
@@ -28,5 +28,11 @@ def printhistory(state):
 
 def nextthrow(state):
   # **** Your code goes here ****
-    return {key:values for (key,values) in {"dice1":[randint(1,6)],"dice2":[randint(1,6)]} }
-nextthrow({'dice1':list(), 'dice2':list()}) 
+  fake_state=copy.deepcopy(state)
+  fake_state['dice1'].append(randint(1,6))
+  fake_state['dice2'].append(randint(1,6))
+  if(fake_state['dice1'][-1]==6 and fake_state['dice2'][-1]==6):
+    return fake_state
+  else:
+    return nextthrow(state)
+printhistory(nextthrow({'dice1':list(), 'dice2':list()}))
